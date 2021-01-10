@@ -1,0 +1,17 @@
+on:
+- push
+- pull_request
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    name: Testing flakes
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: ~/.nix
+        key: always
+    - uses: jD91mZM2/nix-github@master
+    - run: nix build .
+    - run: nix run .

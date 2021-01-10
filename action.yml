@@ -1,0 +1,21 @@
+name: "Nix Flakes"
+description: "Install Nix Flakes"
+runs:
+  using: "composite"
+  steps:
+    - name: Install Flakes
+      run: |
+        . ./install.sh
+
+        # Forward env variables
+        echo "NIX_PATH=$NIX_PATH" >> "$GITHUB_ENV"
+        echo "NIX_PROFILES=$NIX_PROFILES" >> "$GITHUB_ENV"
+        echo "NIX_SSL_CERT_FILE=$NIX_SSL_CERT_FILE" >> "$GITHUB_ENV"
+        echo "MANPATH=$MANPATH" >> "$GITHUB_ENV"
+
+        # Append to $PATH
+        echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+      shell: bash
+    - name: Check Flake
+      run: nix flake check .
+      shell: bash
